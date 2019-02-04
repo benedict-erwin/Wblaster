@@ -25,7 +25,7 @@ public class WhatsappAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent (AccessibilityEvent event) {
         // Test JSON
-        String jsonString = "{ \"broadcast\": [ { \"name\": \"Erwin\", \"phone\": \"6285749518656\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"ArRay\", \"phone\": \"6281249666266\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
+        String jsonString = "{ \"broadcast\": [ { \"name\": \"Erwin\", \"phone\": \"085749518656\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"ArRay\", \"phone\": \"081249666266\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"Basuki\", \"phone\": \"085755566649\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
         try {
             JSONObject jsonObj = new JSONObject(jsonString);
             JSONArray broadCast = jsonObj.getJSONArray("broadcast");
@@ -51,7 +51,15 @@ public class WhatsappAccessibilityService extends AccessibilityService {
                     }
 
                     AccessibilityNodeInfoCompat rootInActiveWindow = AccessibilityNodeInfoCompat.wrap (getRootInActiveWindow ());
-                    Log.d("DBG_X", "WhatsappAccessibilityService :: rootInActiveWindow :: step 1");
+                    Log.d("DBG_X", "WhatsappAccessibilityService :: rootInActiveWindow :: step 1 - " + rootInActiveWindow.isVisibleToUser());
+
+                    // Check npe
+                    if (!rootInActiveWindow.isVisibleToUser()){
+                        sendMessage(phone, message);
+                        try {
+                            Thread.sleep (3000);
+                        } catch (InterruptedException ignored) {}
+                    }
 
                     // Whatsapp Message EditText id
                     List<AccessibilityNodeInfoCompat> messageNodeList = rootInActiveWindow.findAccessibilityNodeInfosByViewId ("com.whatsapp:id/entry");
@@ -65,11 +73,6 @@ public class WhatsappAccessibilityService extends AccessibilityService {
                     Log.d("DBG_X", "WhatsappAccessibilityService :: rootInActiveWindow :: step 3");
                     if (messageField.getText () == null || messageField.getText ().length () == 0
                             || !messageField.getText ().toString ().endsWith (getApplicationContext ().getString (R.string.whatsapp_suffix))) { // So your service doesn't process any message, but the ones ending your apps suffix
-                        sendMessage(phone, message);
-                        try {
-                            Thread.sleep (3000);
-                            performGlobalAction (GLOBAL_ACTION_BACK);
-                        } catch (InterruptedException ignored) {}
                         return;
                     }
 
@@ -96,7 +99,7 @@ public class WhatsappAccessibilityService extends AccessibilityService {
                     // First one to leave the conversation screen
                     // Second one to leave whatsapp
                     try {
-                        Thread.sleep (2000); // hack for certain devices in which the immediate back click is too fast to handle
+                        Thread.sleep (1000); // hack for certain devices in which the immediate back click is too fast to handle
                         performGlobalAction (GLOBAL_ACTION_BACK);
                         Log.d("DBG_X", "WhatsappAccessibilityService :: rootInActiveWindow :: step 7");
                     } catch (InterruptedException ignored) {}
@@ -111,10 +114,14 @@ public class WhatsappAccessibilityService extends AccessibilityService {
     }
 
     private void sendMessage(String phone, String message){
+        if (phone.startsWith("0")){
+            phone = phone.replaceFirst("0", "62");
+        }
+
         try {
             PackageManager packageManager = this.getPackageManager();
             Intent i = new Intent(Intent.ACTION_VIEW);
-            String url = "https://api.whatsapp.com/send?phone="+ phone +"&text=" + URLEncoder.encode(message, "UTF-8");
+            String url = "whatsapp://send?phone="+ phone +"&text=" + URLEncoder.encode(message, "UTF-8");
             i.setPackage("com.whatsapp");
             i.setData(Uri.parse(url));
             if (i.resolveActivity(packageManager) != null) {

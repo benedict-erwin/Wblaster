@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
     // Check If Contact Exists
     private void checkContact(){
         txPhone = findViewById(R.id.txPhone);
-        String name = "Erwin";
-        String email = "cyb3rwin@gmail.com";
+        String name = "Basuki";
+        String email = "gebangangkrik@gmail.com";
         String phoneNumber = txPhone.getText().toString();
         String waNumber;
         String message = "This is a whatsapp message Send By WBLASTER";
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Exists " + phoneNumber, Toast.LENGTH_SHORT).show();
         }else {
             contactClass.saveContact(this, name, email, phoneNumber);
-            Toast.makeText(MainActivity.this, "New Contact Added!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "New Contact Added! - " + phoneNumber, Toast.LENGTH_SHORT).show();
         }
 
         if (phoneNumber.startsWith("0")){
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intent);
             }else {
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                String url = "https://api.whatsapp.com/send?phone="+ phone +"&text=" + URLEncoder.encode(message, "UTF-8");
+                String url = "whatsapp://send?phone="+ phone +"&text=" + URLEncoder.encode(message, "UTF-8");
                 i.setPackage("com.whatsapp");
                 i.setData(Uri.parse(url));
                 if (i.resolveActivity(packageManager) != null) {
