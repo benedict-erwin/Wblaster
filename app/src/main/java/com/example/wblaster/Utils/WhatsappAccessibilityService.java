@@ -25,7 +25,7 @@ public class WhatsappAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent (AccessibilityEvent event) {
         // Test JSON
-        String jsonString = "{ \"broadcast\": [ { \"name\": \"Erwin\", \"phone\": \"085749518656\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"ArRay\", \"phone\": \"081249666266\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"Basuki\", \"phone\": \"085755566649\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
+        String jsonString = "{ \"broadcast\": [ { \"name\": \"Jane\", \"phone\": \"089654321123\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"John\", \"phone\": \"087654321123\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"Doe\", \"phone\": \"087654321123\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
         try {
             JSONObject jsonObj = new JSONObject(jsonString);
             JSONArray broadCast = jsonObj.getJSONArray("broadcast");
