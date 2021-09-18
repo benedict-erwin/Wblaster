@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Test JSON
-        String jsonString = "{ \"broadcast\": [ { \"name\": \"Erwin\", \"phone\": \"085749518656\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"Pranata\", \"phone\": \"085749518656\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
+        String jsonString = "{ \"broadcast\": [ { \"name\": \"John\", \"phone\": \"087654321123\", \"msg_id\": \"1\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" }, { \"name\": \"Doe\", \"phone\": \"088654321123\", \"msg_id\": \"2\", \"msg_content\": \"This is a whatsapp message Send By WBLASTER\" } ] }";
         try {
             JSONObject jsonObj = new JSONObject(jsonString);
             JSONArray broadCast = jsonObj.getJSONArray("broadcast");
